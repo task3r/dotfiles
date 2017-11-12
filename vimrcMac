@@ -28,6 +28,9 @@ set wildmenu
 
 set laststatus=2
 
+let mapleader="\<Space>"
+let g:mapleader="\<Space>"
+
 " TABS
 set tabstop=2
 set shiftwidth=2
@@ -54,4 +57,4 @@ nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 " - FZF
-nnoremap ƒ <Esc>:FZF<C-M>
+nnoremap <Leader>f <Esc>:FZF<C-M>
