@@ -12,8 +12,17 @@ Plugin 'itchyny/lightline.vim'
 Plugin 'junegunn/fzf'
 Plugin 'junegunn/fzf.vim'
 Plugin 'wincent/terminus'
+Plugin 'godlygeek/tabular'
+Plugin 'plasticboy/vim-markdown'
+Plugin 'scrooloose/nerdcommenter'
+Plugin 'MarcWeber/vim-addon-mw-utils'
+Plugin 'tomtom/tlib_vim'
+Plugin 'garbas/vim-snipmate'
+Plugin 'honza/vim-snippets'
+Plugin 'sheerun/vim-polyglot'
 
 Plugin 'beigebrucewayne/Turtles'
+Plugin 'dim13/smyck.vim'
 call vundle#end()
 filetype plugin indent on
 
