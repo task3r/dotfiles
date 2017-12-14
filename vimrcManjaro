@@ -11,13 +11,20 @@ Plugin 'tpope/vim-vinegar'
 Plugin 'itchyny/lightline.vim'
 Plugin 'junegunn/fzf'
 Plugin 'junegunn/fzf.vim'
+Plugin 'MarcWeber/vim-addon-mw-utils'
+Plugin 'tomtom/tlib_vim'
+Plugin 'garbas/vim-snipmate'
+Plugin 'kh3phr3n/python-syntax'
+
+Plugin 'honza/vim-snippets'
 
 Plugin 'beigebrucewayne/Turtles'
+Plugin 'flazz/vim-colorschemes'
 call vundle#end()
 filetype plugin indent on
 
 "colorscheme molokai
-colorscheme turtles
+colorscheme Tomorrow-Night
 syntax on
 set number
 set relativenumber
@@ -27,6 +34,9 @@ set wildmode=longest,list,full
 set wildmenu
 
 set laststatus=2
+
+let mapleader="\<Space>"
+let g:mapleader="\<Space>"
 
 " TABS
 set tabstop=2
@@ -54,8 +64,4 @@ nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 " - FZF
-" Mac
-nnoremap ƒ <Esc>:FZF<C-M>
-" Linux
-execute "set <M-f>=\ef"
-nnoremap <M-f> <Esc>:FZF<C-M>
+nnoremap <Leader>f <Esc>:FZF<C-M>
