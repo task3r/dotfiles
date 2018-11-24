@@ -1,5 +1,0 @@
-setxkbmap -option caps:escape
-(sleep 2s && tint2) &
-nitrogen --restore &
-conky -c .config/config.conky &
-compton --opacity-rule 45:'class_g *= "rofi"' &
