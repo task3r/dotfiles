@@ -29,6 +29,9 @@ set expandtab
 let mapleader="\<Space>"
 let g:mapleader="\<Space>"
 
+" Python
+autocmd BufWritePre *.py 0,$!yapf
+autocmd FileType python setlocal colorcolumn=80
 
 " KEY MAPS
 " - Save
@@ -43,4 +46,6 @@ nnoremap <C-l> <C-w>l
 " - switching tabs
 nnoremap H gT
 nnoremap L gt
+
+nnoremap <Leader><CR> <C-w><C-v>:terminal <CR>i
 
