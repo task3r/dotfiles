@@ -22,21 +22,31 @@ Plug 'w0rp/ale'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'Shougo/denite.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'tpope/vim-fugitive'
-Plug 'dylanaraps/wal.vim'
 Plug 'lervag/vimtex'
 Plug 'rhysd/vim-grammarous'
 Plug 'mhinz/vim-startify'
 Plug 'sheerun/vim-polyglot'
 Plug 'ryanoasis/vim-devicons'
+Plug 'morhetz/gruvbox'
+Plug 'davidhalter/jedi-vim'
+Plug 'cstrahan/vim-capnp'
 call plug#end()
 
-colorscheme wal
+"let g:nord_cursor_line_number_background = 1
+"let g:nord_underline = 1
+"let g:nord_italic_comments = 1
+"colorscheme nord
+let g:gruvbox_italic=1
+colorscheme gruvbox
+set background=dark
 
 set number
 set noswapfile
 set ignorecase
 set smartcase
 set mouse=a
+
+set noshowmode
 
 set lazyredraw
 
@@ -52,8 +62,8 @@ set softtabstop=4
 set expandtab
 
 set cursorline
-hi CursorLine cterm=NONE ctermbg=darkred ctermfg=white
-hi CursorLineNR cterm=NONE ctermbg=darkred ctermfg=white
+"hi CursorLine cterm=NONE ctermbg=darkred ctermfg=white
+"hi CursorLineNR cterm=NONE ctermbg=darkred ctermfg=white
 
 set incsearch
 set ignorecase
@@ -170,9 +180,9 @@ inoremap <silent><expr> <TAB>
 autocmd FileType python setlocal colorcolumn=80
 
 " Latex preview
-let g:livepreview_engine = 'pdftexi2dvi'
-let g:livepreview_previewer = 'zathura'
-let g:vimtex_view_general_viewer = 'zathura'
+"let g:livepreview_engine = 'pdftexi2dvi'
+"let g:livepreview_previewer = 'zathura'
+"let g:vimtex_view_general_viewer = 'zathura'
 
 " Grammarous
 let g:grammarous#disabled_rules = {
@@ -193,16 +203,18 @@ let g:startify_lists = [
 
 let g:startify_bookmarks = [
             \ '~/.config/nvim/init.vim',
-            \ '~/.i3/config'
+            "\ '~/.i3/config'
             \ ]
 
 let g:startify_custom_header = ['Welcome back.']
 
-" Tese...
+"" Tese...
+autocmd BufWritePost *.tex silent! !pdflatex %
 augroup Tese
-    autocmd BufWritePost ~/dev/Msc_JoaoGoncalves/project-report/*.tex silent! !pdftexi2dvi -q -o report.pdf main.tex
+    autocmd BufWritePost ~/dev/Msc_JoaoGoncalves/project-report/*.tex silent! !pdflatex -output-directory=out -jobname=report main.tex; bibtex out/report.aux; -output-directory=out -jobname=report main.tex; -output-directory=out -jobname=report main.tex; cp out/report.pdf .
 augroup END
 let g:polyglot_disabled = ['latex', 'markdown']
+
 
 " KEY MAPS
 " disable ex mode

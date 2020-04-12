@@ -1,10 +1,26 @@
 export PATH="${PATH}:${HOME}/.local/bin/" #betterlock
-alias open='xdg-open'
+export M3_HOME=/Users/task3r/Software/apache-maven-3.6.3
+export LSDS_HOME=/Users/task3r/dev/lsdsuite
+export PATH=$PATH:$M3_HOME/bin
+export PATH=$PATH:$LSDS_HOME/bin
+export PATH="/usr/local/opt/ruby/bin:$PATH"
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
 alias vim='nvim'
 alias gits='git status'
-alias cdt='cd ~/dev/Msc_JoaoGoncalves'
+alias gitd='git diff'
+alias gitch='git checkout'
+alias gitc='git commit'
+alias gitcm='git commit -m'
+alias gita='git add'
+alias gitp='git push'
+alias python2='/usr/bin/python'
+alias python='python3'
+alias py='python3'
+alias proj='f() { cd ~/Documents/teaching/es1920/es20tg_$1-project/backend};f'
+alias esgrade='gitinspector --grading  -x author:Pedro,author:Rito,author:Samuel,author:"José Rocha" --file-types=java,groovy'
 # Path to your oh-my-zsh installation.
-export ZSH="/home/task3r/.oh-my-zsh"
+export ZSH="$HOME/.oh-my-zsh"
 export EDITOR="vim"
 
 ZSH_THEME="spaceship"
@@ -52,12 +68,6 @@ plugins=(git zsh-autosuggestions)
 
 source $ZSH/oh-my-zsh.sh
 
-# Import the colors.
-. "${HOME}/.cache/wal/colors.sh"
-
-# Create the alias.
-alias dmen='dmenu_run -nb "$color0" -nf "$color15" -sb "$color1" -sf "$color15"'
-
-(cat ~/.cache/wal/sequences &)
-source ~/.cache/wal/colors-tty.sh
-
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="/Users/task3r/.sdkman"
+[[ -s "/Users/task3r/.sdkman/bin/sdkman-init.sh" ]] && source "/Users/task3r/.sdkman/bin/sdkman-init.sh"
