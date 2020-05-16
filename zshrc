@@ -14,11 +14,14 @@ alias gitc='git commit'
 alias gitcm='git commit -m'
 alias gita='git add'
 alias gitp='git push'
+alias gitags="git for-each-ref --sort=creatordate --format '%(refname) %(creatordate)' refs/tags"
 alias python2='/usr/bin/python'
 alias python='python3'
 alias py='python3'
 alias proj='f() { cd ~/Documents/teaching/es1920/es20tg_$1-project/backend};f'
 alias esgrade='gitinspector --grading  -x author:Pedro,author:Rito,author:Samuel,author:"José Rocha" --file-types=java,groovy'
+alias cleardb='dropdb tutordb; createdb tutordb; psql tutordb < ~/dev/quizzes-tutor/data/dumps/demo.sql'
+alias vg="vagrant"
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 export EDITOR="vim"
