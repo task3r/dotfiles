@@ -17,7 +17,6 @@ endif
 " Plugins
 call plug#begin('~/.local/share/nvim/plugged')
 Plug 'vim-airline/vim-airline'
-Plug 'arcticicestudio/nord-vim'
 Plug 'w0rp/ale'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'Shougo/denite.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -28,22 +27,21 @@ Plug 'mhinz/vim-startify'
 Plug 'sheerun/vim-polyglot'
 Plug 'ryanoasis/vim-devicons'
 Plug 'morhetz/gruvbox'
-Plug 'davidhalter/jedi-vim'
+"Plug 'davidhalter/jedi-vim'
 Plug 'cstrahan/vim-capnp'
+
+" s,f,t quick search
+Plug 'justinmk/vim-sneak'
+Plug 'unblevable/quick-scope'
 call plug#end()
 
-"let g:nord_cursor_line_number_background = 1
-"let g:nord_underline = 1
-"let g:nord_italic_comments = 1
-"colorscheme nord
 let g:gruvbox_italic=1
 colorscheme gruvbox
 set background=dark
 
 set number
 set noswapfile
-set ignorecase
-set smartcase
+" Enable GUI mouse behavior
 set mouse=a
 
 set noshowmode
@@ -62,24 +60,21 @@ set softtabstop=4
 set expandtab
 
 set cursorline
-"hi CursorLine cterm=NONE ctermbg=darkred ctermfg=white
-"hi CursorLineNR cterm=NONE ctermbg=darkred ctermfg=white
 
 set incsearch
 set ignorecase
 set smartcase
-let g:highlightedyank_highlight_duration = 400
+
+autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank('Substitute', 200)
 
 " Use ESC to exit insert mode in :term
 tnoremap <Esc> <C-\><C-n>
 
 " Leader
 let mapleader="\<Space>"
+let maplocalleader="\<Space>"
 let g:mapleader="\<Space>"
-
-
-" Enable GUI mouse behavior
-set mouse=a
+let g:maplocalleader="\<Space>"
 
 " Ale
 let g:ale_c_gcc_options = "-Wall"
@@ -176,13 +171,24 @@ inoremap <silent><expr> <TAB>
             \ deoplete#manual_complete()
 
 " Python
-"autocmd BufWritePre *.py 0,$!yapf
 autocmd FileType python setlocal colorcolumn=80
 
 " Latex preview
-"let g:livepreview_engine = 'pdftexi2dvi'
-"let g:livepreview_previewer = 'zathura'
-"let g:vimtex_view_general_viewer = 'zathura'
+let g:vimtex_view_method = 'skim'
+
+let g:vimtex_compiler_latexmk = {
+    \ 'options' : [
+    \   '-pdf',
+    \   '-pvc',
+    \   '-shell-escape',
+    \   '-verbose',
+    \   '-file-line-error',
+    \   '-synctex=1',
+    \   '-interaction=nonstopmode',
+    \ ],
+    \ 'build_dir' : 'out',
+    \}
+let g:vimtex_quickfix_enabled = 0
 
 " Grammarous
 let g:grammarous#disabled_rules = {
@@ -193,27 +199,37 @@ autocmd FileType gitcommit,tex,latex setlocal spell spelllang=en_us
 
 " Startify
 let g:startify_session_persistence = 1
-
+let g:startify_session_delete_buffers = 1
+let g:startify_change_to_vcs_root = 1
+let g:startify_custom_header = ['Welcome back.']
 let g:startify_lists = [
             \ { 'type': 'sessions',  'header': ['   Sessions']       },
             \ { 'type': 'files',     'header': ['   MRU']            },
             \ { 'type': 'bookmarks', 'header': ['   Bookmarks']      },
             \ { 'type': 'commands',  'header': ['   Commands']       },
             \ ]
-
 let g:startify_bookmarks = [
-            \ '~/.config/nvim/init.vim',
-            \ '~/.zshrc'
+            \ {'i' : '~/.config/nvim/init.vim'},
+            \ {'z' : '~/.zshrc'}
             \ ]
 
-let g:startify_custom_header = ['Welcome back.']
 
-"" Tese...
-autocmd BufWritePost *.tex silent! !pdflatex %
-augroup Tese
-    autocmd BufWritePost ~/dev/Msc_JoaoGoncalves/project-report/*.tex silent! !pdflatex -output-directory=out -jobname=report main.tex; bibtex out/report.aux; -output-directory=out -jobname=report main.tex; -output-directory=out -jobname=report main.tex; cp out/report.pdf .
-augroup END
+" Polyglot
 let g:polyglot_disabled = ['latex', 'markdown']
+
+" sneak
+let g:sneak#label = 1
+" case insensitive sneak
+let g:sneak#use_ic_scs = 1
+" immediately move to the next instance of search, if you move the cursor sneak is back to default behavior
+let g:sneak#s_next = 1
+let g:sneak#prompt = '⇢ '
+
+" quickscope
+let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
+let g:qs_max_chars=256
+highlight QuickScopePrimary guifg='#ffffff' guibg='#000000' gui=bold ctermfg=0 ctermbg=255 cterm=bold
+highlight QuickScopeSecondary guifg='#ffff00' guibg='#000000' gui=bold ctermfg=0 ctermbg=180 cterm=bold
 
 
 " KEY MAPS
