@@ -16,25 +16,30 @@ endif
 
 " Plugins
 call plug#begin('~/.local/share/nvim/plugged')
-Plug 'vim-airline/vim-airline'
-Plug 'w0rp/ale'
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'Shougo/denite.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'tpope/vim-fugitive'
-Plug 'lervag/vimtex'
-Plug 'rhysd/vim-grammarous'
-Plug 'mhinz/vim-startify'
-Plug 'sheerun/vim-polyglot'
-Plug 'ryanoasis/vim-devicons'
+
+" themes
 Plug 'morhetz/gruvbox'
-"Plug 'davidhalter/jedi-vim'
-Plug 'cstrahan/vim-capnp'
+Plug 'vim-airline/vim-airline'
+Plug 'ryanoasis/vim-devicons'
+
+" git
+Plug 'tpope/vim-fugitive'
+
+"latex
+Plug 'lervag/vimtex'
+
+" home/sessions
+Plug 'mhinz/vim-startify'
 
 " s,f,t quick search
 Plug 'justinmk/vim-sneak'
 Plug 'unblevable/quick-scope'
+
+Plug 'cstrahan/vim-capnp'
+
 call plug#end()
 
+" ----- Gruvbox -----
 let g:gruvbox_italic=1
 colorscheme gruvbox
 set background=dark
@@ -43,8 +48,6 @@ set number
 set noswapfile
 " Enable GUI mouse behavior
 set mouse=a
-
-set noshowmode
 
 set lazyredraw
 
@@ -65,117 +68,57 @@ set incsearch
 set ignorecase
 set smartcase
 
-autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank('Substitute', 200)
-
-" Use ESC to exit insert mode in :term
-tnoremap <Esc> <C-\><C-n>
-
 " Leader
 let mapleader="\<Space>"
 let maplocalleader="\<Space>"
 let g:mapleader="\<Space>"
 let g:maplocalleader="\<Space>"
 
-" Ale
-let g:ale_c_gcc_options = "-Wall"
-let g:ale_c_gcc_executable = "gcc"
-let g:ale_lint_on_text_changed = 0
-let g:ale_lint_on_insert_leave = 1
-let g:ale_sign_error = 'ᳵ'
-let g:ale_sign_warning = '⚠'
-" airlane ale config
-let airline#extensions#ale#error_symbol = 'ᳵ '
-let airline#extensions#ale#warning_symbol = '⚠ '
-let airline#extensions#ale#open_lnum_symbol = '['
-let airline#extensions#ale#close_lnum_symbol = ']'
-"let g:ale_open_list = 'on_save'
-"let g:ale_open_quick_fix = 1
-" cycle through location list
-nmap <silent> <leader>n <Plug>(ale_next_wrap)
-nmap <silent> <leader>p <Plug>(ale_previous_wrap)
+" Highlight yanks
+autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank('Substitute', 200)
 
-" Denite
-" reset 50% winheight on window resize
-augroup deniteresize
-    autocmd!
-    autocmd VimResized,VimEnter * call denite#custom#option('default',
-                \'winheight', winheight(0) / 2)
-augroup end
+" Spelling
+autocmd FileType gitcommit,tex,latex setlocal spell spelllang=en_us
 
-" Define mappings
-autocmd FileType denite call s:denite_my_settings()
-function! s:denite_my_settings() abort
-  nnoremap <silent><buffer><expr> <CR>
-  \ denite#do_map('do_action')
-  nnoremap <silent><buffer><expr> d
-  \ denite#do_map('do_action', 'delete')
-  nnoremap <silent><buffer><expr> p
-  \ denite#do_map('do_action', 'preview')
-  nnoremap <silent><buffer><expr> q
-  \ denite#do_map('quit')
-  nnoremap <silent><buffer><expr> i
-  \ denite#do_map('open_filter_buffer')
-  nnoremap <silent><buffer><expr> <Space>
-  \ denite#do_map('toggle_select').'j'
-endfunction
-
-call denite#custom#option('default', {
-            \ 'prompt': '❯'
-            \ })
-
-call denite#custom#var('file/rec', 'command',
-            \ ['fd', '--full-path', '-E', '*.o'])
-call denite#custom#var('grep', 'command', ['rg'])
-call denite#custom#var('grep', 'default_opts',
-            \ ['--hidden', '--vimgrep', '--smart-case'])
-call denite#custom#var('grep', 'recursive_opts', [])
-call denite#custom#var('grep', 'pattern_opt', ['--regexp'])
-call denite#custom#var('grep', 'separator', ['--'])
-call denite#custom#var('grep', 'final_opts', [])
-call denite#custom#map('insert', '<Esc>', '<denite:enter_mode:normal>',
-            \'noremap')
-call denite#custom#map('normal', '<Esc>', '<NOP>',
-            \'noremap')
-call denite#custom#map('insert', '<C-v>', '<denite:do_action:vsplit>',
-            \'noremap')
-call denite#custom#map('normal', '<C-v>', '<denite:do_action:vsplit>',
-            \'noremap')
-call denite#custom#map('normal', 'dw', '<denite:delete_word_after_caret>',
-            \'noremap')
-
-nnoremap <C-p> :<C-u>Denite file/rec<CR>
-nnoremap <leader>b :<C-u>Denite buffer<CR>
-nnoremap <leader>B :<C-u>DeniteBufferDir buffer<CR>
-nnoremap <leader>8 :<C-u>DeniteCursorWord grep:.<CR>
-nnoremap <leader>/ :<C-u>Denite grep:.<CR>
-nnoremap <leader>? :<C-u>DeniteBufferDir grep:.<CR>
-nnoremap <leader>f :<C-u>DeniteBufferDir file/rec<CR>
-"nnoremap <leader>r :<C-u>Denite -resume -cursor-pos=+1<CR>
-nnoremap <leader>R :<C-u>Denite register:.<CR>
-hi link deniteMatchedChar Special
-
-" Deoplete
-let g:deoplete#enable_at_startup = 1
-call deoplete#custom#option('auto_refresh_delay', 0)
-let g:ale_fixers = {
-            \   '*': ['remove_trailing_lines', 'trim_whitespace'],
-            \}
-" tab for completion but not on start of line
-function! s:check_back_space() abort "{{{
-    let col = col('.') - 1
-    return !col || getline('.')[col - 1]  =~ '\s'
-endfunction"}}}
-inoremap <silent><expr> <TAB>
-            \ pumvisible() ? "\<C-n>" :
-            \ <SID>check_back_space() ? "\<TAB>" :
-            \ deoplete#manual_complete()
-
-" Python
+" Python column line
 autocmd FileType python setlocal colorcolumn=80
 
-" Latex preview
-let g:vimtex_view_method = 'skim'
 
+" ----- Airline -----
+" tell vim to not show modes, let airline do it
+set noshowmode
+" enable tabline
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#left_sep = ''
+let g:airline#extensions#tabline#left_alt_sep = ''
+let g:airline#extensions#tabline#right_sep = ''
+let g:airline#extensions#tabline#right_alt_sep = ''
+let airline#extensions#tabline#show_splits = 0
+let airline#extensions#tabline#tabs_label = ''
+" Disable tabline close button
+let g:airline#extensions#tabline#show_close_button = 0
+let g:airline#extensions#tabline#show_tab_type = 0
+let g:airline#extensions#tabline#show_tab_nr = 0
+let g:airline#extensions#tabline#fnamecollapse = 1
+let g:airline#extensions#tabline#show_tab_type = 0
+let g:airline#extensions#tabline#buffers_label = ''
+let g:airline#extensions#tabline#tabs_label = ''
+" Just show the file name
+let g:airline#extensions#tabline#fnamemod = ':t'
+" enable powerline fonts
+let g:airline_powerline_fonts = 1
+let g:airline_left_sep = ''
+let g:airline_right_sep = ''
+let g:airline_right_alt_sep = ''
+let g:airline#extensions#tabline#formatter = 'unique_tail'
+" Always show tabs
+set showtabline=2
+" Sections
+let g:webdevicons_enable_airline_tabline = 1
+
+
+" ----- Vimtex -----
+let g:vimtex_view_method = 'skim'
 let g:vimtex_compiler_latexmk = {
     \ 'options' : [
     \   '-pdf',
@@ -190,14 +133,8 @@ let g:vimtex_compiler_latexmk = {
     \}
 let g:vimtex_quickfix_enabled = 0
 
-" Grammarous
-let g:grammarous#disabled_rules = {
-            \ '*' : ['WORD_CONTAINS_UNDERSCORE'],
-            \ }
-autocmd FileType gitcommit,tex,latex setlocal spell spelllang=en_us
-"autocmd BufRead,BufNewFile *.md setlocal spell spelllang=en_us
 
-" Startify
+" ----- Startify -----
 let g:startify_session_persistence = 1
 let g:startify_session_delete_buffers = 1
 let g:startify_change_to_vcs_root = 1
@@ -214,10 +151,7 @@ let g:startify_bookmarks = [
             \ ]
 
 
-" Polyglot
-let g:polyglot_disabled = ['latex', 'markdown']
-
-" sneak
+" ----- Sneak -----
 let g:sneak#label = 1
 " case insensitive sneak
 let g:sneak#use_ic_scs = 1
@@ -225,38 +159,45 @@ let g:sneak#use_ic_scs = 1
 let g:sneak#s_next = 1
 let g:sneak#prompt = '⇢ '
 
-" quickscope
+
+" ----- Quickscope -----
 let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
 let g:qs_max_chars=256
 highlight QuickScopePrimary guifg='#ffffff' guibg='#000000' gui=bold ctermfg=0 ctermbg=255 cterm=bold
 highlight QuickScopeSecondary guifg='#ffff00' guibg='#000000' gui=bold ctermfg=0 ctermbg=180 cterm=bold
 
 
-" KEY MAPS
-" disable ex mode
+" ----- Vim-FuGITive
+nnoremap <leader>d :Gdiff<CR>
+nnoremap <leader>s :Gstatus<CR>
+
+
+" -----> GENERAL KEY MAPS <-----
+" Disable ex mode
 nnoremap Q <nop>
-" - Save
+" Save
 nnoremap <Leader>w <Esc>:w<C-M>
-" - Quit without saving
-nnoremap <Leader>q <Esc>:q!<C-M>
-" - switching panes
+" Save and quit
+nnoremap <Leader>q <Esc>:wq<C-M>
+" Quit without saving
+nnoremap <Leader>Q <Esc>:q!<C-M>
+" switching panes
 nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
-" - switching tabs
-nnoremap H gT
-nnoremap L gt
-" - open terminal
+" Close buffer
+nnoremap <Leader>W <Esc>:bd<CR>
+" Cycling buffers
+nnoremap H :bprevious<CR>
+nnoremap L :bnext<CR>
+" Open terminal
 nnoremap <Leader><CR> <C-w><C-v>:terminal <CR>i
-" - vim fugitive
-nnoremap <leader>d :Gdiff<CR>
-nnoremap <leader>s :Gstatus<CR>
-" - re indent file
-map <F7> gg=G<C-o><C-o>:ALEFix <CR>:w <CR>
-" clear selection
+" Use ESC to exit insert mode in :term
+tnoremap <Esc> <C-\><C-n>
+" Clear selection
 nnoremap <leader>n <Esc>:noh<CR>
-" search for visual selected text
+" Search for visual selected text
 vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
-" replace visual selected text
+" Replace visual selected text
 vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>
