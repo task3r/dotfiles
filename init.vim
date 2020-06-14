@@ -120,6 +120,16 @@ let g:webdevicons_enable_airline_tabline = 1
 
 
 " ----- CoC -----
+let g:coc_global_extensions = [
+            \'coc-java', 
+            \'coc-jedi',
+            \'coc-clangd',
+            \'coc-vimlsp',
+            \'coc-texlab', 
+            \'coc-actions', 
+            \'coc-explorer',
+            \'coc-lists'
+            \]
 " TextEdit might fail if hidden is not set.
 set hidden "change buffer without saving changes
 " Some servers have issues with backup files, see #649.
@@ -231,27 +241,30 @@ command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organize
 set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 " Mappings for CoCList
 " Show all diagnostics.
-nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
+nnoremap <silent><nowait> <Leader>a  :<C-u>CocList diagnostics<cr>
 " Manage extensions.
-nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
+nnoremap <silent><nowait> <Leader>e  :<C-u>CocList extensions<cr>
 " Show commands.
-nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
+nnoremap <silent><nowait> <Leader>c  :<C-u>CocList commands<cr>
 " Find symbol of current document.
-nnoremap <silent><nowait> <space>o  :<C-u>CocList outline<cr>
+nnoremap <silent><nowait> <Leader>o  :<C-u>CocList outline<cr>
 " Search workspace symbols.
-nnoremap <silent><nowait> <space>s  :<C-u>CocList -I symbols<cr>
+nnoremap <silent><nowait> <Leader>s  :<C-u>CocList -I symbols<cr>
 " Do default action for next item.
-nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
+nnoremap <silent><nowait> <Leader>j  :<C-u>CocNext<CR>
 " Do default action for previous item.
-nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
+nnoremap <silent><nowait> <Leader>k  :<C-u>CocPrev<CR>
 " Resume latest coc list.
-nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
+nnoremap <silent><nowait> <Leader>p  :<C-u>CocListResume<CR>
+" Show buffers
+nnoremap <silent><nowait> <Leader>b :<C-u>CocList buffers<CR>
 " Explorer
 nmap <Leader>e :CocCommand explorer<CR>
 autocmd BufEnter * if (winnr("$") == 1 && &filetype == 'coc-explorer') | q | endif
 
 
 " ----- Vimtex -----
+let g:tex_flavor='latex'
 let g:vimtex_view_method = 'skim'
 let g:vimtex_compiler_latexmk = {
     \ 'options' : [
