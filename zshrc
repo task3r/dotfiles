@@ -23,6 +23,10 @@ export ZSH="$HOME/.oh-my-zsh"
 export EDITOR="vim"
 
 ZSH_THEME="spaceship"
+SPACESHIP_GIT_STATUS_PREFIX=" "
+SPACESHIP_GIT_STATUS_SUFFIX=""
+SPACESHIP_GIT_STATUS_COLOR="yellow"
+
 # Uncomment the following line if pasting URLs and other text is messed up.
 # DISABLE_MAGIC_FUNCTIONS=true
 
@@ -47,3 +51,7 @@ source $ZSH/oh-my-zsh.sh
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="/Users/task3r/.sdkman"
 [[ -s "/Users/task3r/.sdkman/bin/sdkman-init.sh" ]] && source "/Users/task3r/.sdkman/bin/sdkman-init.sh"
+
+  # Set Spaceship ZSH as a prompt
+  autoload -U promptinit; promptinit
+  prompt spaceship
