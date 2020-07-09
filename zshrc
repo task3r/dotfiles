@@ -51,7 +51,3 @@ source $ZSH/oh-my-zsh.sh
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="/Users/task3r/.sdkman"
 [[ -s "/Users/task3r/.sdkman/bin/sdkman-init.sh" ]] && source "/Users/task3r/.sdkman/bin/sdkman-init.sh"
-
-  # Set Spaceship ZSH as a prompt
-  autoload -U promptinit; promptinit
-  prompt spaceship
