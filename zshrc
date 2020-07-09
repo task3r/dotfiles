@@ -18,29 +18,13 @@ alias gitags="git for-each-ref --sort=creatordate --format '%(refname) %(creator
 alias python2='/usr/bin/python'
 alias python='python3'
 alias py='python3'
-alias proj='f() { cd ~/Documents/teaching/es1920/es20tg_$1-project/backend};f'
-alias esgrade='gitinspector --grading  -x author:Pedro,author:Rito,author:Samuel,author:"José Rocha" --file-types=java,groovy'
-alias cleardb='dropdb tutordb; createdb tutordb; psql tutordb < ~/dev/quizzes-tutor/data/dumps/demo.sql'
-alias vg="vagrant"
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 export EDITOR="vim"
 
 ZSH_THEME="spaceship"
-# Uncomment the following line to disable bi-weekly auto-update checks.
-# DISABLE_AUTO_UPDATE="true"
-
-# Uncomment the following line to automatically update without prompting.
-# DISABLE_UPDATE_PROMPT="true"
-
-# Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
-
 # Uncomment the following line if pasting URLs and other text is messed up.
 # DISABLE_MAGIC_FUNCTIONS=true
-
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
 
 # Uncomment the following line to disable auto-setting terminal title.
 # DISABLE_AUTO_TITLE="true"
@@ -56,18 +40,7 @@ COMPLETION_WAITING_DOTS="true"
 # much, much faster.
 # DISABLE_UNTRACKED_FILES_DIRTY="true"
 
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# You can set one of the optional three formats:
-# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# or set a custom format using the strftime function format specifications,
-# see 'man strftime' for details.
-# HIST_STAMPS="mm/dd/yyyy"
-
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-
-plugins=(git zsh-autosuggestions)
+plugins=(git zsh-autosuggestions zsh-syntax-highlighting vagrant)
 
 source $ZSH/oh-my-zsh.sh
 

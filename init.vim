@@ -119,9 +119,9 @@ set showtabline=2
 let g:webdevicons_enable_airline_tabline = 1
 
 
+"\'coc-java', 
 " ----- CoC -----
 let g:coc_global_extensions = [
-            \'coc-java', 
             \'coc-jedi',
             \'coc-clangd',
             \'coc-vimlsp',
