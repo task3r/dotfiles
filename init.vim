@@ -128,6 +128,7 @@ let g:coc_global_extensions = [
             \'coc-texlab', 
             \'coc-actions', 
             \'coc-explorer',
+            \'coc-rust-analyzer',
             \'coc-lists'
             \]
 " TextEdit might fail if hidden is not set.
@@ -243,7 +244,7 @@ set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 " Show all diagnostics.
 nnoremap <silent><nowait> <Leader>a  :<C-u>CocList diagnostics<cr>
 " Manage extensions.
-nnoremap <silent><nowait> <Leader>e  :<C-u>CocList extensions<cr>
+" nnoremap <silent><nowait> <Leader>e  :<C-u>CocList extensions<cr>
 " Show commands.
 nnoremap <silent><nowait> <Leader>c  :<C-u>CocList commands<cr>
 " Find symbol of current document.
@@ -257,10 +258,46 @@ nnoremap <silent><nowait> <Leader>k  :<C-u>CocPrev<CR>
 " Resume latest coc list.
 nnoremap <silent><nowait> <Leader>p  :<C-u>CocListResume<CR>
 " Show buffers
-nnoremap <silent><nowait> <Leader>b :<C-u>CocList buffers<CR>
+nnoremap <silent><nowait> <Leader>B :<C-u>CocList buffers<CR>
 " Explorer
-nmap <Leader>e :CocCommand explorer<CR>
+nmap <Leader>E :CocCommand explorer<CR>
+nmap <Leader>e :CocCommand explorer --preset floating<CR>
+nmap <Leader>b :CocCommand explorer --preset floating --sources buffer+<CR>
 autocmd BufEnter * if (winnr("$") == 1 && &filetype == 'coc-explorer') | q | endif
+
+let g:coc_explorer_global_presets = {
+\   '.vim': {
+\     'root-uri': '~/.vim',
+\   },
+\   'tab': {
+\     'position': 'tab',
+\     'quit-on-open': v:true,
+\   },
+\   'floating': {
+\     'position': 'floating',
+\     'open-action-strategy': 'sourceWindow',
+\   },
+\   'floatingTop': {
+\     'position': 'floating',
+\     'floating-position': 'center-top',
+\     'open-action-strategy': 'sourceWindow',
+\   },
+\   'floatingLeftside': {
+\     'position': 'floating',
+\     'floating-position': 'left-center',
+\     'floating-width': 50,
+\     'open-action-strategy': 'sourceWindow',
+\   },
+\   'floatingRightside': {
+\     'position': 'floating',
+\     'floating-position': 'right-center',
+\     'floating-width': 50,
+\     'open-action-strategy': 'sourceWindow',
+\   },
+\   'simplify': {
+\     'file-child-template': '[selection | clip | 1] [indent][icon | 1] [filename omitCenter 1]'
+\   }
+\ }
 
 
 " ----- Vimtex -----
