@@ -120,12 +120,11 @@ let g:webdevicons_enable_airline_tabline = 1
 
 
 "\'coc-java', 
+"\'coc-clangd',
 " ----- CoC -----
 let g:coc_global_extensions = [
             \'coc-jedi',
-            \'coc-clangd',
             \'coc-vimlsp',
-            \'coc-texlab', 
             \'coc-actions', 
             \'coc-explorer',
             \'coc-lists'
@@ -258,6 +257,8 @@ nnoremap <silent><nowait> <Leader>k  :<C-u>CocPrev<CR>
 nnoremap <silent><nowait> <Leader>p  :<C-u>CocListResume<CR>
 " Show buffers
 nnoremap <silent><nowait> <Leader>b :<C-u>CocList buffers<CR>
+" Show buffers
+nnoremap <silent><nowait> <Leader>/ :<C-u>CocList grep<CR>
 " Explorer
 nmap <Leader>e :CocCommand explorer<CR>
 autocmd BufEnter * if (winnr("$") == 1 && &filetype == 'coc-explorer') | q | endif
@@ -270,7 +271,7 @@ let g:vimtex_compiler_latexmk = {
     \ 'options' : [
     \   '-pdf',
     \   '-pvc',
-    \   '-shell-escape',
+    \   '--shell-escape',
     \   '-verbose',
     \   '-file-line-error',
     \   '-synctex=1',
