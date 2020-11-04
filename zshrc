@@ -27,6 +27,8 @@ SPACESHIP_GIT_STATUS_PREFIX=" "
 SPACESHIP_GIT_STATUS_SUFFIX=""
 SPACESHIP_GIT_STATUS_COLOR="yellow"
 
+SPACESHIP_RUST_SYMBOL="🦀  "
+
 # Uncomment the following line if pasting URLs and other text is messed up.
 # DISABLE_MAGIC_FUNCTIONS=true
 
