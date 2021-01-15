@@ -45,6 +45,8 @@ Plug 'alx741/vim-rustfmt'
 
 Plug 'honza/vim-snippets'
 
+Plug 'vimwiki/vimwiki'
+
 call plug#end()
 
 set number
@@ -371,15 +373,18 @@ nnoremap <leader>d :Gdiff<CR>
 nnoremap <leader>s :Gstatus<CR>
 
 
+" ----- Vim-Wiki
+let g:vimwiki_list = [{'path': '~/dev/wiki' }]
+autocmd BufWritePost ~/dev/wiki/*
+    \ execute '!cd ' . expand("<amatch>:p:h")
+    \ . ' && git commit -m "Auto commit of '
+    \ . expand("<afile>:t") . '" "' . expand("<afile>") . '"  && git push'
+
 " -----> GENERAL KEY MAPS <-----
 " Disable ex mode
 nnoremap Q <nop>
 " Save
-nnoremap <Leader>w <Esc>:w<C-M>
-" Save and quit
-nnoremap <Leader>q <Esc>:wq<C-M>
-" Quit without saving
-nnoremap <Leader>Q <Esc>:q!<C-M>
+nnoremap <Leader><Space> <Esc>:w<C-M>
 " switching panes
 nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
