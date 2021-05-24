@@ -47,6 +47,10 @@ Plug 'honza/vim-snippets'
 
 Plug 'vimwiki/vimwiki'
 
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+
 call plug#end()
 
 set number
@@ -81,7 +85,7 @@ let g:maplocalleader="\<Space>"
 autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank('Substitute', 200)
 
 " Spelling
-autocmd FileType gitcommit,tex,latex setlocal spell spelllang=en_us
+autocmd FileType gitcommit,tex,latex,vimwiki setlocal spell spelllang=en_us
 
 " Python column line
 autocmd FileType python setlocal colorcolumn=80
@@ -274,7 +278,8 @@ nnoremap <silent><nowait> <Leader>p  :<C-u>CocListResume<CR>
 " Show buffers
 nnoremap <silent><nowait> <Leader>B :<C-u>CocList buffers<CR>
 " Show buffers
-nnoremap <silent><nowait> <Leader>/ :<C-u>CocList grep<CR>
+nnoremap <silent><nowait> <Leader>/ :<C-u>Telescope live_grep<CR>
+nnoremap <silent><nowait> <Leader>` :<C-u>Telescope builtin<CR>
 " Explorer
 nmap <Leader>E :CocCommand explorer<CR>
 nmap <Leader>e :CocCommand explorer --preset floating<CR>
@@ -331,7 +336,7 @@ let g:vimtex_compiler_latexmk = {
     \ ],
     \ 'build_dir' : 'out',
     \}
-let g:vimtex_compiler_progname = 'nvr'
+let g:vimtex_compiler_progname = 'latexmk'
 let g:vimtex_quickfix_enabled = 0
 
 
@@ -375,10 +380,19 @@ nnoremap <leader>s :Gstatus<CR>
 
 " ----- Vim-Wiki
 let g:vimwiki_list = [{'path': '~/dev/wiki' }]
+autocmd FileType vimwiki nnoremap <leader><CR> :call CompileVimwiki()<CR>
+function CompileVimwiki()
+    execute 'VimwikiAll2HTML'
+    execute '!open ~/dev/wiki_html/index.html'
+endfunction
+
 autocmd BufWritePost ~/dev/wiki/*
-    \ execute '!cd ' . expand("<amatch>:p:h")
-    \ . ' && git commit -m "Auto commit of '
-    \ . expand("<afile>:t") . '" "' . expand("<afile>") . '"  && git push'
+    \ silent exec '!cd ' . expand("<amatch>:p:h")
+    \ . ' && git add . && git commit -m "Auto commit of '
+    \ . expand("<afile>:t") . '"'
+"autocmd BufWinLeave ~/dev/wiki/*
+"    \ silent exec '!cd ' . expand("<amatch>:p:h")
+"    \ . ' && git push'
 
 " -----> GENERAL KEY MAPS <-----
 " Disable ex mode
@@ -396,7 +410,7 @@ nnoremap <Leader>W <Esc>:bd<CR>
 nnoremap H :bprevious<CR>
 nnoremap L :bnext<CR>
 " Open terminal
-nnoremap <Leader><CR> <C-w><C-v>:terminal <CR>i
+" nnoremap <Leader><CR> <C-w><C-v>:terminal <CR>i
 " Use ESC to exit insert mode in :term
 tnoremap <Esc> <C-\><C-n>
 " Clear selection
