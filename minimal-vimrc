@@ -1,4 +1,4 @@
-set nocompatible
+" set nocompatible
 
 " Load plugins according to detected filetype.
 filetype plugin indent on
@@ -22,25 +22,9 @@ set softtabstop=4
 set expandtab
 set autoindent
 
-set cursorline
-
 set incsearch
 set ignorecase
 set smartcase
-
-" Leader
-let mapleader="\<Space>"
-let maplocalleader="\<Space>"
-let g:mapleader="\<Space>"
-let g:maplocalleader="\<Space>"
-
-" Highlight yanks
-autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank('Substitute', 200)
-
-" Spelling
-autocmd FileType gitcommit,tex,latex,vimwiki setlocal spell spelllang=en_us
-
-set colorcolumn=80
 
 " Always show tabs
 set hidden "change buffer without saving changes
@@ -48,12 +32,23 @@ set nobackup
 set nowritebackup
 set cmdheight=2
 
-if has("patch-8.1.1564")
-  " Recently vim can merge signcolumn and number column into one
-  set signcolumn=number
-else
-  set signcolumn=yes
-endif
+colorscheme elflord
+
+set cursorline
+hi CursorLine   cterm=NONE ctermbg=16 ctermfg=NONE
+hi CursorLineNR cterm=NONE ctermbg=16 ctermfg=NONE
+
+set colorcolumn=80
+hi ColorColumn cterm=NONE ctermbg=16 ctermfg=NONE
+
+" Leader
+let mapleader="\<Space>"
+let maplocalleader="\<Space>"
+let g:mapleader="\<Space>"
+let g:maplocalleader="\<Space>"
+
+" Spelling
+autocmd FileType gitcommit,tex,latex,vimwiki setlocal spell spelllang=en_us
 
 " -----> GENERAL KEY MAPS <-----
 " Disable ex mode
