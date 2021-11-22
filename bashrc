@@ -20,14 +20,15 @@ shopt -s checkwinsize
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
-# enable color support of ls and also add handy aliases
-if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias ls='ls --color=auto'
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
+# Detect which `ls` flavor is in use
+if ls --color > /dev/null 2>&1; then # GNU `ls`
+    alias ls="ls --color=auto"
+else # OS X `ls`
+    alias ls="ls -G"
 fi
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
 
 # colored GCC warnings and errors
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
@@ -42,6 +43,11 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+
+if which nvim &> /dev/null; then
+    alias vim=nvim
+fi
+export EDITOR=vim
 
 if [ ! -d ~/.fzf ]; then 
     git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
