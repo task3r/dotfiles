@@ -4,6 +4,7 @@ case $- in
       *) return;;
 esac
 
+
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
 HISTCONTROL=ignoreboth
@@ -58,24 +59,26 @@ fi
 if [ ! -d ~/.gitstatus ]; then
     git clone --depth 1 https://github.com/romkatv/gitstatus.git ~/.gitstatus
 fi
-source ~/.gitstatus/gitstatus.prompt.sh
 
-function prompt_status {
-  if [ "$?" == "0" ]; then
-    echo -e '\033[01;32m$\033[00m'
+function __prompt_command {
+    source ~/.gitstatus/gitstatus.prompt.sh
+    local exit_code=$?
+    PS1='\[\033[01;32m\]\h\[\033[00m\] \[\033[01;34m\]\w\[\033[00m\] ${GITSTATUS_PROMPT}\n'
+  if [ "$exit_code" == "0" ]; then
+    PS1+='\[\033[01;32m\]\$\[\033[00m\] '
   else
-    echo -e '\033[01;31m$\033[00m'
+    PS1+='\[\033[01;31m\]\$\[\033[00m\] '
   fi
 }
 
-PS1='\[\033[01;32m\]\h\[\033[00m\] \[\033[01;34m\]\w\[\033[00m\] ${GITSTATUS_PROMPT}\n\[$(prompt_status)\] '
+PROMPT_COMMAND=__prompt_command
 
 # Aliases
 
 # ls
-alias ll='ls -alF'
-alias la='ls -A'
-alias l='ls -CF'
+command -v exa >/dev/null 2>&1 && alias ls='exa --group-directories-first'
+alias l='ls -alF'
+alias la='ls -a'
 
 # git
 alias ga='git add'
@@ -86,7 +89,7 @@ alias gc!='git commit -v --amend'
 alias gcmsg='git commit -m'
 alias gco='git checkout'
 alias gd='git diff'
-alias gdca='git diff --cached'
+alias gdca='git diff --staged'
 alias gdw='git diff --word-diff'
 alias gl='git pull'
 alias glog='git log --oneline --decorate --graph'
