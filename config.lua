@@ -2,12 +2,17 @@
 lvim.log.level = "warn"
 lvim.format_on_save = true
 lvim.colorscheme = "gruvbox"
+vim.opt.colorcolumn = "80"
+vim.opt.shiftwidth = 4
+vim.opt.tabstop = 4
+vim.opt.softtabstop = 4
 
 -- keymappings [view all the defaults by pressing <leader>Lk]
 lvim.leader = "space"
 -- add your own keymapping
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
 lvim.keys.normal_mode["<leader><leader>"] = ":w<cr>"
+lvim.keys.normal_mode["<leader>n"] = ":noh<cr>"
 
 -- After changing plugin config exit and reopen LunarVim, Run :PackerInstall :PackerCompile
 lvim.builtin.dashboard.active = true
@@ -41,3 +46,33 @@ lvim.plugins = {
     },
     {"ellisonleao/gruvbox.nvim", requires = {"rktjmp/lush.nvim"}}
 }
+
+local efm_opts = {
+    init_options = {documentFormatting = true},
+    filetypes = {"sh"},
+    settings = {
+        rootMarkers = {".git/"},
+        languages = {
+            sh = {
+                {
+                    lintCommand = 'shellcheck -f gcc -x',
+                    lintSource = 'shellcheck',
+                    lintFormats= {'%f:%l:%c: %trror: %m',
+                                '%f:%l:%c: %tarning: %m',
+                                '%f:%l:%c: %tote: %m'
+                    },
+                    formatCommand = 'shfmt -ci -i 4 -s -bn',
+                    formatStdin = true
+                }
+
+            }
+        }
+    }
+}
+
+require("lspconfig")["efm"].setup(efm_opts)
+
+lvim.autocommands.custom_groups = {
+    { "FileType", "make", "set noexpandtab" }
+}
+

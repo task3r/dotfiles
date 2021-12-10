@@ -96,3 +96,9 @@ alias glog='git log --oneline --decorate --graph'
 alias gloga='git log --oneline --decorate --graph --all'
 alias gp='git push'
 alias gst='git status'
+
+# vagrant
+alias vup='vagrant up'
+alias vssh='vagrant ssh'
+alias vh='vagrant halt'
+alias vd='vagrant destroy'
