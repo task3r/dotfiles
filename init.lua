@@ -36,6 +36,18 @@ require('packer').startup(function(use)
     }
 
     -- git
+    use 'tpope/vim-fugitive'
+    use {
+        'pwntester/octo.nvim',
+        requires = {
+            'nvim-lua/plenary.nvim',
+            'nvim-telescope/telescope.nvim',
+            'kyazdani42/nvim-web-devicons',
+        },
+        config = function()
+            require('octo').setup()
+        end
+    }
     use {
         'lewis6991/gitsigns.nvim',
         config = function()
@@ -59,13 +71,66 @@ require('packer').startup(function(use)
             require("trouble").setup()
         end
     }
+    use {
+        "folke/todo-comments.nvim",
+        requires = "nvim-lua/plenary.nvim",
+        config = function()
+            require("todo-comments").setup()
+        end
+    }
 
     -- explorer
     use {
         'kyazdani42/nvim-tree.lua',
         requires = { 'kyazdani42/nvim-web-devicons' },
         config = function()
-            require('nvim-tree').setup()
+            vim.cmd [[ let g:nvim_tree_icons = {
+               \ 'default': "",
+               \ 'symlink': "",
+               \ 'git': {
+               \     'unstaged': "",
+               \     'staged': "S",
+               \     'unmerged': "",
+               \     'renamed': "➜",
+               \     'deleted': "",
+               \     'untracked': "U",
+               \     'ignored': "◌",
+               \ },
+               \ 'folder': {
+               \     'default': "",
+               \     'open': "",
+               \     'empty': "",
+               \     'empty_open': "",
+               \     'symlink': "",
+               \ }
+               \}
+            ]]
+
+            require('nvim-tree').setup({
+                -- disable_netrw = true,
+                -- hijack_netrw = true,
+                -- open_on_setup = false,
+                -- ignore_buffer_on_setup = false,
+                -- ignore_ft_on_setup = {
+                --     "startify",
+                --     "dashboard",
+                --     "alpha",
+                -- },
+                -- auto_reload_on_write = true,
+                -- hijack_unnamed_buffer_when_opening = false,
+                -- hijack_directories = {
+                --     enable = true,
+                --     auto_open = true,
+                -- },
+                -- update_to_buf_dir = {
+                --     enable = true,
+                --     auto_open = true,
+                -- },
+                -- auto_close = false,
+                -- open_on_tab = false,
+                -- hijack_cursor = false,
+                -- update_cwd = false,
+            })
         end
     }
 
@@ -99,7 +164,7 @@ require('packer').startup(function(use)
             vim.cmd [[
             set guioptions-=e " use showtabline in gui vim
             set sessionoptions+=tabpages,globals " store tabpages and globals in session
-        ]]
+            ]]
         end,
         requires = {
             { 'nvim-lualine/lualine.nvim', opt = true },
@@ -122,6 +187,8 @@ require('packer').startup(function(use)
             })
         end
     }
+
+    use { '~/dev/zitation.nvim' } --rocks = { 'lua-json', 'http' } }
 
     -- must be at the end
     if packer_bootstrap then
@@ -150,8 +217,14 @@ vim.opt.incsearch = true
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
+-- command settings
+vim.opt.inccommand = 'split'
+
 -- visual settings
+vim.opt.showmode = false
+vim.opt.signcolumn = 'yes'
 vim.opt.cursorline = true
+vim.opt.colorcolumn = '80'
 vim.opt.termguicolors = true
 vim.opt.background = 'dark'
 vim.g.gruvbox_italicize_strings = 1
@@ -162,7 +235,7 @@ vim.cmd [[augroup highlight_yank
 augroup END]]
 vim.cmd [[highlight NormalFloat guibg=#282828]]
 vim.cmd [[highlight FloatBorder guifg=#fbf1c7 guibg=#282828]]
-vim.cmd [[highlight Search guibg=#fabd2f guifg=#282828]]
+--vim.cmd [[highlight Search guibg=#fabd2f guifg=#282828]]
 
 local colors = {
     bg = "#202328",
@@ -402,7 +475,7 @@ end)
 
 -- completion
 local lspkind = require('lspkind')
-lspkind.setup()
+lspkind.init()
 local cmp = require('cmp')
 cmp.setup({
     window = {
@@ -499,13 +572,10 @@ keymap('n', '<C-j>', '<C-w>j')
 keymap('n', '<C-k>', '<C-w>k')
 keymap('n', '<C-l>', '<C-w>l')
 -- move between buffers
-keymap('n', 'H', '<cmd>:bnext<cr>')
-keymap('n', 'L', '<cmd>:bprevious<cr>')
+keymap('n', 'L', '<cmd>:bnext<cr>')
+keymap('n', 'H', '<cmd>:bprevious<cr>')
 -- clear selection
 keymap('n', '<leader>n', '<cmd>:noh<cr>')
--- comments
-keymap('n', '<leader>/', '<cmd>:lua require("Comment.api").toggle_current_linewise()<cr>')
-keymap('x', '<leader>/', '<cmd>:lua require("Comment.api").toggle_linewise_op(vim.fn.visualmode())<cr>')
 -- explorer
 keymap('n', '<leader>e', '<cmd>:NvimTreeToggle<cr>')
 -- lsp
@@ -531,7 +601,20 @@ keymap('n', '<leader>xw', '<cmd>:TroubleToggle workspace_diagnostics<cr>')
 keymap('n', '<leader>xd', '<cmd>:TroubleToggle document_diagnostics<cr>')
 keymap('n', '<leader>xq', '<cmd>:TroubleToggle quickfix<cr>')
 keymap('n', '<leader>xl', '<cmd>:TroubleToggle loclist<cr>')
+keymap('n', '<leader>xt', '<cmd>:TodoTrouble<cr>')
+keymap('n', '<leader>xT', '<cmd>:TodoTelescope<cr>')
 keymap('n', 'gR', '<cmd>:TroubleToggle lsp_references<cr>')
+-- fugitive
+keymap('n', '<leader>gs', '<cmd>:Git<cr>')
+keymap('n', '<leader>gc', '<cmd>:Git commit<cr>')
+keymap('n', '<leader>gd', '<cmd>:Git diff<cr>')
+keymap('n', '<leader>gD', '<cmd>:Gdiffsplit<cr>')
+keymap('n', '<leader>gl', '<cmd>:Git log<cr>')
+-- octo
+keymap('n', '<leader>oil', '<cmd>:Octo issue list<cr>')
+keymap('n', '<leader>oic', '<cmd>:Octo issue create<cr>')
+keymap('n', '<leader>oa', '<cmd>:Octo actions<cr>')
+
 
 -- autocmds
 -- format on save
