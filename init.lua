@@ -188,7 +188,7 @@ require('packer').startup(function(use)
         end
     }
 
-    use { '~/dev/zitation.nvim' } --rocks = { 'lua-json', 'http' } }
+    use { '~/dev/zitation.nvim' }
 
     -- must be at the end
     if packer_bootstrap then
@@ -582,12 +582,12 @@ keymap('n', '<leader>e', '<cmd>:NvimTreeToggle<cr>')
 keymap('n', 'gd', '<cmd>:lua vim.lsp.buf.definition()<cr>')
 keymap('n', 'gD', '<cmd>:lua vim.lsp.buf.declaration()<cr>')
 keymap('n', 'gi', '<cmd>:lua vim.lsp.buf.implementation()<cr>')
-keymap('n', 'gw', '<cmd>:lua vim.lsp.buf.document_symbol()<cr>')
-keymap('n', 'gw', '<cmd>:lua vim.lsp.buf.workspace_symbol()<cr>')
-keymap('n', 'gr', '<cmd>:lua vim.lsp.buf.references()<cr>')
+keymap('n', 'gw', '<cmd>:Telescope lsp_document_symbols<cr>')
+keymap('n', 'gW', '<cmd>:Telescope lsp_workspace_symbols<cr>')
+keymap('n', 'gr', '<cmd>:Telescope lsp_references<cr>')
 keymap('n', 'gt', '<cmd>:lua vim.lsp.buf.type_definition()<cr>')
 keymap('n', 'K', '<cmd>:lua vim.lsp.buf.hover()<cr>')
-keymap('n', '<c-k>', '<cmd>:lua vim.lsp.buf.signature_help()<cr>')
+keymap('n', 'Kh', '<cmd>:lua vim.lsp.buf.signature_help()<cr>')
 keymap('n', '<leader>af', '<cmd>:lua vim.lsp.buf.code_action()<cr>')
 keymap('n', '<leader>rn', '<cmd>:lua vim.lsp.buf.rename()<cr>')
 -- telescope
@@ -595,6 +595,9 @@ keymap('n', '<leader>ff', '<cmd>:Telescope find_files<cr>')
 keymap('n', '<leader>fg', '<cmd>:Telescope live_grep<cr>')
 keymap('n', '<leader>fb', '<cmd>:Telescope buffers<cr>')
 keymap('n', '<leader>fh', '<cmd>:Telescope help_tags<cr>')
+keymap('n', '<leader>fc', '<cmd>:Telescope command_history<cr>')
+keymap('n', '<leader>fC', '<cmd>:Telescope commands<cr>')
+keymap('n', '<leader>ft', '<cmd>:Telescope<cr>')
 -- trouble
 keymap('n', '<leader>xx', '<cmd>:TroubleToggle<cr>')
 keymap('n', '<leader>xw', '<cmd>:TroubleToggle workspace_diagnostics<cr>')
@@ -614,7 +617,8 @@ keymap('n', '<leader>gl', '<cmd>:Git log<cr>')
 keymap('n', '<leader>oil', '<cmd>:Octo issue list<cr>')
 keymap('n', '<leader>oic', '<cmd>:Octo issue create<cr>')
 keymap('n', '<leader>oa', '<cmd>:Octo actions<cr>')
-
+-- zitation
+keymap('n', '<leader>z', "<cmd>:lua require('zitation').pick_citation()<cr>")
 
 -- autocmds
 -- format on save
