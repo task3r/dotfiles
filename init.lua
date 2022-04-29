@@ -58,12 +58,13 @@ require('packer').startup(function(use)
     -- finder
     use {
         'nvim-telescope/telescope.nvim',
-        requires = { { 'nvim-lua/plenary.nvim' } }
+        requires = { 'nvim-lua/plenary.nvim' }
     }
     use {
         'nvim-telescope/telescope-fzf-native.nvim',
         run = 'make'
     }
+    use { 'nvim-telescope/telescope-ui-select.nvim' }
     use {
         'folke/trouble.nvim',
         requires = 'kyazdani42/nvim-web-devicons',
@@ -77,6 +78,12 @@ require('packer').startup(function(use)
         config = function()
             require("todo-comments").setup()
         end
+    }
+
+    -- sessions
+    use {
+        'Shatur/neovim-session-manager',
+        requires = "nvim-lua/plenary.nvim",
     }
 
     -- explorer
@@ -105,32 +112,7 @@ require('packer').startup(function(use)
                \ }
                \}
             ]]
-
-            require('nvim-tree').setup({
-                -- disable_netrw = true,
-                -- hijack_netrw = true,
-                -- open_on_setup = false,
-                -- ignore_buffer_on_setup = false,
-                -- ignore_ft_on_setup = {
-                --     "startify",
-                --     "dashboard",
-                --     "alpha",
-                -- },
-                -- auto_reload_on_write = true,
-                -- hijack_unnamed_buffer_when_opening = false,
-                -- hijack_directories = {
-                --     enable = true,
-                --     auto_open = true,
-                -- },
-                -- update_to_buf_dir = {
-                --     enable = true,
-                --     auto_open = true,
-                -- },
-                -- auto_close = false,
-                -- open_on_tab = false,
-                -- hijack_cursor = false,
-                -- update_cwd = false,
-            })
+            require('nvim-tree').setup()
         end
     }
 
@@ -152,10 +134,12 @@ require('packer').startup(function(use)
         requires = { 'kyazdani42/nvim-web-devicons', opt = true }
     }
 
+    -- notifications
+    use 'rcarriga/nvim-notify'
+
     -- tabline
     use {
         'kdheepak/tabline.nvim',
-        commit = "bbaf9a97b24ae2d4f0c7d8751d5f28aa45332480",
         config = function()
             require 'tabline'.setup {
                 enable = true,
@@ -555,6 +539,16 @@ end
 local telescope = require('telescope')
 telescope.setup()
 telescope.load_extension('fzf')
+telescope.load_extension('ui-select')
+
+-- notify
+vim.notify = require("notify")
+
+-- sessions
+require('session_manager').setup({
+    autoload_mode = require('session_manager.config').AutoloadMode.Disabled,
+    autosave_only_in_session = true
+})
 
 -- keymaps
 local function keymap(mode, map, action)
@@ -618,7 +612,12 @@ keymap('n', '<leader>oil', '<cmd>:Octo issue list<cr>')
 keymap('n', '<leader>oic', '<cmd>:Octo issue create<cr>')
 keymap('n', '<leader>oa', '<cmd>:Octo actions<cr>')
 -- zitation
-keymap('n', '<leader>z', "<cmd>:lua require('zitation').pick_citation()<cr>")
+keymap('n', '<leader>z', "<cmd>:Zitation<cr>")
+-- sessions
+keymap('n', '<leader>ss', "<cmd>:SessionManager save_current_session<cr>")
+keymap('n', '<leader>sl', "<cmd>:SessionManager load_session<cr>")
+keymap('n', '<leader>sd', "<cmd>:SessionManager delete<cr>")
+
 
 -- autocmds
 -- format on save
