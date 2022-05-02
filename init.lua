@@ -15,8 +15,37 @@ require('packer').startup(function(use)
         'nvim-treesitter/nvim-treesitter',
         run = ':TSUpdate'
     }
-    use 'neovim/nvim-lspconfig'
-    use 'williamboman/nvim-lsp-installer'
+    use {
+        "neovim/nvim-lspconfig",
+        requires = { "williamboman/nvim-lsp-installer", 'folke/lua-dev.nvim' },
+        config = function()
+            require("nvim-lsp-installer").setup({
+                automatic_installation = true, })
+            local lspconfig = require("lspconfig")
+            lspconfig.sumneko_lua.setup(require('lua-dev').setup())
+            lspconfig.jedi_language_server.setup({})
+            lspconfig.rust_analyzer.setup({})
+            lspconfig.grammarly.setup({})
+            lspconfig.gopls.setup({})
+            lspconfig.clangd.setup({})
+        end
+    }
+    use {
+        "jose-elias-alvarez/null-ls.nvim",
+        requires = { "nvim-lua/plenary.nvim" },
+        config = function()
+            local null_ls = require("null-ls")
+            null_ls.setup({
+                sources = {
+                    null_ls.builtins.completion.spell,
+                    null_ls.builtins.formatting.yapf,
+                    null_ls.builtins.formatting.shfmt,
+                    null_ls.builtins.code_actions.shellcheck,
+                    null_ls.builtins.diagnostics.shellcheck
+                },
+            })
+        end,
+    }
     use 'hrsh7th/cmp-nvim-lsp'
     use 'hrsh7th/cmp-buffer'
     use 'hrsh7th/cmp-path'
@@ -312,33 +341,28 @@ local components = {
             msg = msg or "LS Inactive"
             local buf_clients = vim.lsp.buf_get_clients()
             if next(buf_clients) == nil then
-                -- TODO: clean up this if statement
                 if type(msg) == "boolean" or #msg == 0 then
                     return "LS Inactive"
                 end
                 return msg
             end
-            -- local buf_ft = vim.bo.filetype
-            local buf_client_names = {}
 
-            -- add client
+            local buf_ft = vim.bo.filetype
+            local buf_client_names = {}
             for _, client in pairs(buf_clients) do
                 if client.name ~= "null-ls" then
-                    table.insert(buf_client_names, client.name)
+                    buf_client_names[client.name] = true
                 end
             end
-
-            -- -- add formatter
-            -- local formatters = require "lvim.lsp.null-ls.formatters"
-            -- local supported_formatters = formatters.list_registered(buf_ft)
-            -- vim.list_extend(buf_client_names, supported_formatters)
-            --
-            -- -- add linter
-            -- local linters = require "lvim.lsp.null-ls.linters"
-            -- local supported_linters = linters.list_registered(buf_ft)
-            -- vim.list_extend(buf_client_names, supported_linters)
-
-            return "[" .. table.concat(buf_client_names, ", ") .. "]"
+            local null_ls_sources = require("null-ls.sources")
+            for _, source in ipairs(null_ls_sources.get_available(buf_ft)) do
+                buf_client_names[source.name] = true
+            end
+            local keys = {}
+            for key, _ in pairs(buf_client_names) do
+                table.insert(keys, key)
+            end
+            return "[" .. table.concat(keys, ", ") .. "]"
         end,
         color = { gui = "bold" },
         cond = conditions.hide_in_width,
@@ -433,29 +457,6 @@ configs.setup({
     highlight = { enable = true },
     indent = { enable = true }
 })
-
--- lsp
-local lsp_installer = require('nvim-lsp-installer')
-lsp_installer.on_server_ready(function(server)
-    local opts = {}
-    if server.name == 'sumneko_lua' then
-        opts = {
-            settings = {
-                Lua = {
-                    diagnostics = {
-                        globals = { 'vim', 'use' }
-                    },
-                    workspace = {
-                        -- Make the server aware of Neovim runtime files
-                        library = { [vim.fn.expand('$VIMRUNTIME/lua')] = true, [vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true }
-                    }
-                }
-            }
-        }
-    end
-    server:setup(opts)
-end)
-
 
 -- completion
 local lspkind = require('lspkind')
