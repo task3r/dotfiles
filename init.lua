@@ -167,23 +167,7 @@ require('packer').startup(function(use)
     use 'rcarriga/nvim-notify'
 
     -- tabline
-    use {
-        'kdheepak/tabline.nvim',
-        config = function()
-            require 'tabline'.setup {
-                enable = true,
-                options = { modified_italic = true }
-            }
-            vim.cmd [[
-            set guioptions-=e " use showtabline in gui vim
-            set sessionoptions+=tabpages,globals " store tabpages and globals in session
-            ]]
-        end,
-        requires = {
-            { 'nvim-lualine/lualine.nvim', opt = true },
-            { 'kyazdani42/nvim-web-devicons', opt = true }
-        }
-    }
+    use { 'akinsho/bufferline.nvim', tag = "v2.*", requires = 'kyazdani42/nvim-web-devicons' }
 
     -- lsp visuals
     use 'onsails/lspkind-nvim'
@@ -448,6 +432,30 @@ require('lualine').setup({
     },
     tabline = {},
     extensions = { "nvim-tree" },
+})
+
+-- buffer line
+require('bufferline').setup({
+    options = {
+        indicator_icon = '▎',
+        buffer_close_icon = '',
+        modified_icon = '●',
+        offsets = {
+            {
+                filetype = "NvimTree",
+                text = "Explorer",
+                padding = 1,
+            },
+            {
+                filetype = "packer",
+                text = "Packer",
+                padding = 1,
+            },
+        },
+        separator_style = { "", "" },
+        show_close_icon = false,
+        show_tab_indicators = true,
+    }
 })
 
 -- treesitter
