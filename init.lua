@@ -28,6 +28,8 @@ require('packer').startup(function(use)
             lspconfig.grammarly.setup({})
             lspconfig.gopls.setup({})
             lspconfig.clangd.setup({})
+            lspconfig.texlab.setup({})
+            lspconfig.ltex.setup({})
         end
     }
     use {
@@ -185,6 +187,28 @@ require('packer').startup(function(use)
         end
     }
 
+    -- latex
+    use {
+        'lervag/vimtex',
+        config = function()
+            vim.g.tex_flavor = 'latex'
+            vim.g.vimtex_view_method = 'skim'
+            vim.g.vimtex_compiler_latexmk = {
+                options = {
+                    '-pdf',
+                    '-pvc',
+                    '--shell-escape',
+                    '-verbose',
+                    '-file-line-error',
+                    '-synctex=1',
+                    '-interaction=nonstopmode',
+                },
+                build_dir = 'out',
+            }
+            vim.g.vimtex_compiler_progname = 'nvr'
+            vim.g.vimtex_quickfix_enabled = 0
+        end
+    }
     use { '~/dev/zitation.nvim' }
 
     -- must be at the end
@@ -591,7 +615,11 @@ keymap('n', 'gr', '<cmd>:Telescope lsp_references<cr>')
 keymap('n', 'gt', '<cmd>:lua vim.lsp.buf.type_definition()<cr>')
 keymap('n', 'K', '<cmd>:lua vim.lsp.buf.hover()<cr>')
 keymap('n', 'Kh', '<cmd>:lua vim.lsp.buf.signature_help()<cr>')
-keymap('n', '<leader>af', '<cmd>:lua vim.lsp.buf.code_action()<cr>')
+keymap('n', '<leader>la', '<cmd>:lua vim.lsp.buf.code_action()<cr>')
+keymap('n', '<leader>lF', '<cmd>:lua vim.diagnostic.open_float()<cr>')
+keymap('n', '<leader>lf', '<cmd>:lua vim.diagnostic.setloclist()<cr>')
+keymap('n', '<leader>l[', '<cmd>lua vim.diagnostic.goto_prev()<cr>')
+keymap('n', '<leader>l]', '<cmd>lua vim.diagnostic.goto_next()<cr>')
 keymap('n', '<leader>rn', '<cmd>:lua vim.lsp.buf.rename()<cr>')
 -- telescope
 keymap('n', '<leader>ff', '<cmd>:Telescope find_files<cr>')
@@ -626,6 +654,8 @@ keymap('n', '<leader>z', "<cmd>:Zitation<cr>")
 keymap('n', '<leader>ss', "<cmd>:SessionManager save_current_session<cr>")
 keymap('n', '<leader>sl', "<cmd>:SessionManager load_session<cr>")
 keymap('n', '<leader>sd', "<cmd>:SessionManager delete<cr>")
+-- packer
+keymap('n', '<leader>ps', "<cmd>:PackerSync<cr>")
 
 
 -- autocmds
