@@ -15,6 +15,7 @@ require('packer').startup(function(use)
         'nvim-treesitter/nvim-treesitter',
         run = ':TSUpdate'
     }
+    use 'nvim-treesitter/nvim-treesitter-context'
     use {
         "neovim/nvim-lspconfig",
         requires = { "williamboman/nvim-lsp-installer", 'folke/lua-dev.nvim' },
@@ -39,11 +40,13 @@ require('packer').startup(function(use)
             local null_ls = require("null-ls")
             null_ls.setup({
                 sources = {
-                    null_ls.builtins.completion.spell,
                     null_ls.builtins.formatting.yapf,
-                    null_ls.builtins.formatting.shfmt,
+                    null_ls.builtins.formatting.shfmt.with({
+                        args = { "-filename", "$FILENAME", "-i", "4", "-s", "-bn" },
+                    }),
                     null_ls.builtins.code_actions.shellcheck,
-                    null_ls.builtins.diagnostics.shellcheck
+                    null_ls.builtins.diagnostics.shellcheck,
+                    --null_ls.builtins.formatting.rustfmt
                 },
             })
         end,
@@ -121,30 +124,32 @@ require('packer').startup(function(use)
     use {
         'kyazdani42/nvim-tree.lua',
         requires = { 'kyazdani42/nvim-web-devicons' },
-        config = function()
-            vim.cmd [[ let g:nvim_tree_icons = {
-               \ 'default': "",
-               \ 'symlink': "",
-               \ 'git': {
-               \     'unstaged': "",
-               \     'staged': "S",
-               \     'unmerged': "",
-               \     'renamed': "➜",
-               \     'deleted': "",
-               \     'untracked': "U",
-               \     'ignored': "◌",
-               \ },
-               \ 'folder': {
-               \     'default': "",
-               \     'open': "",
-               \     'empty': "",
-               \     'empty_open': "",
-               \     'symlink': "",
-               \ }
-               \}
-            ]]
-            require('nvim-tree').setup()
-        end
+        require('nvim-tree').setup({
+            renderer = {
+                icons = {
+                    glyphs = {
+                        default = "",
+                        symlink = "",
+                        git = {
+                            unstaged = "",
+                            staged = "S",
+                            unmerged = "",
+                            renamed = "➜",
+                            deleted = "",
+                            untracked = "U",
+                            ignored = "◌",
+                        },
+                        folder = {
+                            default = "",
+                            open = "",
+                            empty = "",
+                            empty_open = "",
+                            symlink = "",
+                        }
+                    }
+                }
+            }
+        })
     }
 
     -- startup screen
@@ -193,6 +198,8 @@ require('packer').startup(function(use)
         config = function()
             vim.g.tex_flavor = 'latex'
             vim.g.vimtex_view_method = 'skim'
+            -- vim.g.vimtex_view_skim_activate = 1
+            vim.g.vimtex_view_skim_sync = 1
             vim.g.vimtex_compiler_latexmk = {
                 options = {
                     '-pdf',
@@ -256,7 +263,8 @@ vim.cmd [[augroup highlight_yank
 augroup END]]
 vim.cmd [[highlight NormalFloat guibg=#282828]]
 vim.cmd [[highlight FloatBorder guifg=#fbf1c7 guibg=#282828]]
---vim.cmd [[highlight Search guibg=#fabd2f guifg=#282828]]
+vim.cmd [[highlight TreesitterContext guibg=#3c3836]]
+vim.cmd [[highlight TreesitterContextLineNumber guibg=#3c3836 guifg=#b8bb26]]
 
 local colors = {
     bg = "#202328",
@@ -486,6 +494,7 @@ require('bufferline').setup({
 local configs = require('nvim-treesitter.configs')
 configs.setup({
     ensure_installed = 'all',
+    ignore_install = { "latex" },
     highlight = { enable = true },
     indent = { enable = true }
 })
@@ -628,6 +637,7 @@ keymap('n', '<leader>fb', '<cmd>:Telescope buffers<cr>')
 keymap('n', '<leader>fh', '<cmd>:Telescope help_tags<cr>')
 keymap('n', '<leader>fc', '<cmd>:Telescope command_history<cr>')
 keymap('n', '<leader>fC', '<cmd>:Telescope commands<cr>')
+keymap('n', '<leader>fd', '<cmd>:Telescope diagnostics<cr>')
 keymap('n', '<leader>ft', '<cmd>:Telescope<cr>')
 -- trouble
 keymap('n', '<leader>xx', '<cmd>:TroubleToggle<cr>')
@@ -648,6 +658,10 @@ keymap('n', '<leader>gl', '<cmd>:Git log<cr>')
 keymap('n', '<leader>oil', '<cmd>:Octo issue list<cr>')
 keymap('n', '<leader>oic', '<cmd>:Octo issue create<cr>')
 keymap('n', '<leader>oa', '<cmd>:Octo actions<cr>')
+-- vimtex
+keymap('n', '<leader>vv', '<cmd>:VimtexView<cr>')
+keymap('n', '<leader>vt', '<cmd>:VimtexTocToggle<cr>')
+keymap('n', '<leader>vc', '<cmd>:VimtexCompile<cr>')
 -- zitation
 keymap('n', '<leader>z', "<cmd>:Zitation<cr>")
 -- sessions
