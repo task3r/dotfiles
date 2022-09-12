@@ -26,11 +26,11 @@ require('packer').startup(function(use)
             lspconfig.sumneko_lua.setup(require('lua-dev').setup())
             lspconfig.jedi_language_server.setup({})
             lspconfig.rust_analyzer.setup({})
-            lspconfig.grammarly.setup({})
-            lspconfig.gopls.setup({})
+            --lspconfig.grammarly.setup({})
+            --lspconfig.gopls.setup({})
             lspconfig.clangd.setup({})
-            lspconfig.texlab.setup({})
-            lspconfig.ltex.setup({})
+            --lspconfig.texlab.setup({})
+            --lspconfig.ltex.setup({})
         end
     }
     use {
@@ -603,7 +603,9 @@ end
 -- save
 keymap('n', '<leader><space>', '<cmd>:w<cr>')
 -- close buffer
-keymap('n', '<leader>q', '<cmd>:bd<cr>')
+keymap('n', '<leader>c', '<cmd>:bd<cr>')
+-- close other buffers
+keymap('n', '<leader>co', '<cmd>:%bd|e#|bd#<cr><cr>')
 -- move between panes
 keymap('n', '<C-h>', '<C-w>h')
 keymap('n', '<C-j>', '<C-w>j')
