@@ -4,7 +4,8 @@ local fn = vim.fn
 local install_path = fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
 local packer_bootstrap = false
 if fn.empty(fn.glob(install_path)) > 0 then
-    packer_bootstrap = fn.system({ 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path })
+    packer_bootstrap = fn.system({ 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim',
+        install_path })
 end
 
 require('packer').startup(function(use)
@@ -18,19 +19,22 @@ require('packer').startup(function(use)
     use 'nvim-treesitter/nvim-treesitter-context'
     use {
         "neovim/nvim-lspconfig",
-        requires = { "williamboman/nvim-lsp-installer", 'folke/lua-dev.nvim' },
+        requires = { "williamboman/nvim-lsp-installer", 'folke/neodev.nvim' },
         config = function()
             require("nvim-lsp-installer").setup({
-                automatic_installation = true, })
+                automatic_installation = true,
+            })
             local lspconfig = require("lspconfig")
-            lspconfig.sumneko_lua.setup(require('lua-dev').setup())
+            require("neodev").setup({})
+            lspconfig.sumneko_lua.setup({})
             lspconfig.jedi_language_server.setup({})
             lspconfig.rust_analyzer.setup({})
             --lspconfig.grammarly.setup({})
             --lspconfig.gopls.setup({})
             lspconfig.clangd.setup({})
-            --lspconfig.texlab.setup({})
+            lspconfig.texlab.setup({})
             --lspconfig.ltex.setup({})
+            lspconfig.kotlin_language_server.setup({})
         end
     }
     use {
@@ -257,7 +261,7 @@ vim.opt.cursorline = true
 vim.opt.colorcolumn = '80'
 vim.opt.termguicolors = true
 vim.opt.background = 'dark'
-vim.g.gruvbox_italicize_strings = 1
+-- vim.g.gruvbox_italicize_strings = 1
 vim.cmd [[colorscheme gruvbox]]
 vim.cmd [[augroup highlight_yank
     autocmd!
@@ -471,7 +475,10 @@ require('lualine').setup({
 -- buffer line
 require('bufferline').setup({
     options = {
-        indicator_icon = '▎',
+        indicator = {
+            icon = "▎",
+            style = "icon",
+        },
         buffer_close_icon = '',
         modified_icon = '●',
         offsets = {
@@ -674,7 +681,8 @@ keymap('n', '<leader>sl', "<cmd>:SessionManager load_session<cr>")
 keymap('n', '<leader>sd', "<cmd>:SessionManager delete<cr>")
 -- packer
 keymap('n', '<leader>ps', "<cmd>:PackerSync<cr>")
-
+-- terminal
+keymap('t', '<Esc>', '<C-\\><C-n>')
 
 -- autocmds
 -- format on save
