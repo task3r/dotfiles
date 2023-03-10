@@ -40,6 +40,7 @@ return {
     --
     -- behaviour
     --
+    send_composed_key_when_left_alt_is_pressed = true, -- option special chars
     keys = {
         {
             key = 'LeftArrow',
@@ -67,7 +68,7 @@ return {
         {
             key = 'Backspace',
             mods = 'CMD',
-            action = act.SendKey { key = 'w', mods = 'ALT' },
+            action = act.SendKey { key = 'u', mods = 'CTRL' },
         },
         {
             key = 'Backspace',
