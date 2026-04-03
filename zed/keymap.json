@@ -1,0 +1,38 @@
+[
+  {
+    "context": "Editor && VimControl && !VimWaiting && !menu",
+    "bindings": {
+      "space space": "workspace::Save",
+      "H": "pane::ActivatePrevItem",
+      "L": "pane::ActivateNextItem",
+      // "L": "pane::",
+      "space c a": "editor::ToggleCodeActions",
+      "space r n": "editor::Rename",
+      // "space e": "project_panel::ToggleFocus",
+      "space ]": "editor::GoToDiagnostic",
+      "space [": "editor::GoToPrevDiagnostic",
+      "ctrl-h": "workspace::ActivatePaneLeft",
+      "ctrl-l": "workspace::ActivatePaneRight",
+      "ctrl-k": "workspace::ActivatePaneUp",
+      "ctrl-j": "workspace::ActivatePaneDown"
+    }
+  },
+  {
+    "context": "Editor && vim_mode == normal",
+    "bindings": {
+      "g c c": "editor::ToggleComments"
+    }
+  },
+  {
+    "context": "Editor && vim_mode == visual",
+    "bindings": {
+      "g c": "editor::ToggleComments"
+    }
+  }
+  // {
+  //   "context": "ProjectPanel",
+  //   "bindings": {
+  //     "space e": "project_panel::ToggleFocus",
+  //   }
+  // }
+]

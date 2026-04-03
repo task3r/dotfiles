@@ -1,0 +1,7 @@
+theme = Gruvbox Dark
+font-family = "CommitMono"
+font-size = 16
+macos-titlebar-style = tabs
+shell-integration = zsh
+
+keybind = cmd+backspace=esc:w
