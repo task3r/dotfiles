@@ -1,45 +1,50 @@
 local wezterm = require('wezterm')
 local act = wezterm.action
 
+local gruvbox = {
+    background = '#282727',
+    foreground = '#ebdab1',
+    cursor_bg = '#ebdab1',
+    cursor_fg = '#282727',
+    cursor_border = '#3c3735',
+    selection_fg = '#ebdab1',
+    selection_bg = '#665b53',
+    ansi = {
+        '#282727', -- black, color 0
+        '#cb231d', -- red, color 1
+        '#98961a', -- green, color 2
+        '#d69821',
+        '#458487',
+        '#b06185',
+        '#689c69',
+        '#a89883',
+    },
+    brights = {
+        '#928273', -- black, color 0
+        '#fa4834', -- red, color 1
+        '#b8ba26', -- green, color 2
+        '#f9bc2f',
+        '#83a497',
+        '#d2859a',
+        '#8ebf7b',
+        '#ebdab1',
+    },
+}
+
 return {
     --
     -- looks
     --
     enable_tab_bar = false,
-    font = wezterm.font('JetBrainsMono Nerd Font Mono'),
+    -- font = wezterm.font('Monaspace Neon'),
+    -- font = wezterm.font('JetBrainsMono Nerd Font Mono'),
+    font = wezterm.font('CommitMono'),
     font_size = 16.0,
-    colors = {
-        background = '#282727',
-        foreground = '#ebdab1',
-        cursor_bg = '#ebdab1',
-        cursor_fg = '#282727',
-        cursor_border = '#3c3735',
-        selection_fg = '#ebdab1',
-        selection_bg = '#665b53',
-        ansi = {
-            '#282727', -- black, color 0
-            '#cb231d', -- red, color 1
-            '#98961a', -- green, color 2
-            '#d69821',
-            '#458487',
-            '#b06185',
-            '#689c69',
-            '#a89883',
-        },
-        brights = {
-            '#928273', -- black, color 0
-            '#fa4834', -- red, color 1
-            '#b8ba26', -- green, color 2
-            '#f9bc2f',
-            '#83a497',
-            '#d2859a',
-            '#8ebf7b',
-            '#ebdab1',
-        },
-    },
+    colors = gruvbox,
     --
     -- behaviour
     --
+    default_prog = { '/usr/local/bin/run-tmux.sh' },
     send_composed_key_when_left_alt_is_pressed = true, -- option special chars
     keys = {
         {

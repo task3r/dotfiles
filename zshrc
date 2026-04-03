@@ -37,6 +37,7 @@ export SDKMAN_DIR="/Users/task3r/.sdkman"
 
 # aliases
 alias vim='nvim'
+alias time='/usr/bin/time -p'
 alias gitags="git for-each-ref --sort=creatordate --format '%(refname) %(creatordate)' refs/tags"
 alias python='python3'
 alias py='python3'
@@ -44,3 +45,4 @@ command -v exa >/dev/null 2>&1 && alias ls='exa --group-directories-first'
 bindkey \^U backward-kill-line
 
 [ -z "$TMUX" ] && exec tmux new -As main
+eval "$(direnv hook zsh)"
